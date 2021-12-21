@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  moviecollection:
+    image: ${DOCKER_REGISTRY-}moviecollection
+    build:
+      context: .
+      dockerfile: MovieCollection/Dockerfile

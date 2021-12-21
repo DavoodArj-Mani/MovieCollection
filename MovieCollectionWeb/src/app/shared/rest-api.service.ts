@@ -17,7 +17,8 @@ import { NavbarComponent } from 'app/components/navbar/navbar.component';
 export class RestApiService {
   
   // Define API
-  apiURL = 'http://localhost:5000';
+  //apiURL = 'http://localhost:56600';
+  apiURL = "http://localhost:5000";
 
   constructor(private http: HttpClient/*,private navBar: NavbarComponent*/) { }
 
@@ -148,12 +149,33 @@ export class RestApiService {
       catchError(this.handleError)
     )
   }
+  QueryCollectionsByName(collectionName){
+    if(!this.httpOptions.headers.has('Authorization'))
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+      
+    return this.http.get<Collection[]>(this.apiURL + '/api/Collection/QueryByName/'+ collectionName, this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+
   // HttpClient API Get() method => QueryMyCollections
   QueryMyCollections(){
     if(!this.httpOptions.headers.has('Authorization'))
       this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
       
     return this.http.get<Collection[]>(this.apiURL + '/api/Collection/QueryMyCollections/', this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+  QueryMyCollectionsByName(collectionName){
+    if(!this.httpOptions.headers.has('Authorization'))
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+      
+    return this.http.get<Collection[]>(this.apiURL + '/api/Collection/QueryMyCollectionsByName/'+ collectionName, this.httpOptions)
     .pipe(
       retry(1),
       catchError(this.handleError)

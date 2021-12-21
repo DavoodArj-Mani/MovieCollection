@@ -20,9 +20,9 @@ namespace MovieCollection.Services.Core.CollectionServices
 
         IEnumerable<Collection> QueryMyCollectionByName(Guid userId, string collectionName);
 
-        CollectionMovie CreateCollectionMovie(CollectionMovie collectionMovie);
+        CollectionMovie CreateCollectionMovie(CollectionMovie collectionMovie, Guid userId);
 
-        Boolean DeleteCollection(Guid collectionId);
+        Boolean DeleteCollection(Guid collectionId, Guid userId);
 
         Boolean QueryCollectionMovie (Guid movieId, Guid collectionId);
 

@@ -14,19 +14,23 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MovieCollection.Model;
+using MovieCollection.Model.App;
+using MovieCollection.Services.App.RoleServices;
+using MovieCollection.Services.App.UserServices;
 using MovieCollection.Shared;
 
 namespace MovieCollection
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
-
-        public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {

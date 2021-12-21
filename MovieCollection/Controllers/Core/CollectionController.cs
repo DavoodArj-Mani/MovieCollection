@@ -86,7 +86,8 @@ namespace MovieCollection.Controllers.Core
         [Route("DeleteCollection/{collectionId}")]
         public IActionResult DeleteCollection([FromRoute] Guid collectionId)
         {
-            var result = _collectionService.DeleteCollection(collectionId);
+            var userId = _authenticationService.UserInfo(Request).UserId;
+            var result = _collectionService.DeleteCollection(collectionId, userId);
             if (!result)
                 return NotFound();
             else
@@ -127,8 +128,17 @@ namespace MovieCollection.Controllers.Core
             }
             else
             {
-                var result = _collectionService.CreateCollectionMovie(_collectionMovie);
-                return Ok(result);
+                var userId = _authenticationService.UserInfo(Request).UserId;
+                var result = _collectionService.CreateCollectionMovie(_collectionMovie, userId);
+                if(result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return NotFound();
+                }
+                
             }
         }
         [HttpGet]

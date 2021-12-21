@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RestApiService } from 'app/shared/rest-api.service';
 import { Collection } from 'app/shared/view-entity/collection';
 import { Movie } from 'app/shared/view-entity/movie';
+import { SelectedCollectionMovie } from 'app/shared/view-entity/selected-collection-movie';
 declare var $: any;
 @Component({
   selector: 'app-collection',
@@ -14,14 +15,15 @@ export class CollectionComponent implements OnInit {
   collectionDisplayedColumns: string[] = ['CollectionId', 'CollectionName','action'];
   collectionDataSource = new MatTableDataSource<Collection>();
 
-  showMoviesModal: boolean;
-  movieDisplayedColumns: string[] = ['MovieId', 'MovieName'];
-  movieDataSource = new MatTableDataSource<Movie>();
+  movieDisplayedColumns: string[] = ['CollectionId', 'CollectionName','MovieId', 'MovieName'];
+  movieDataSource = new MatTableDataSource<SelectedCollectionMovie>();
+
+  selectedCollectionMovie: SelectedCollectionMovie[] = [];
+  
   
 
   constructor(public restApi: RestApiService) { }
   @ViewChild(MatPaginator) collectionPaginator: MatPaginator;
-  @ViewChild(MatPaginator) moviePaginator: MatPaginator;
 
   ngOnInit(): void {
     if (localStorage.getItem("Token") === null) 
@@ -36,18 +38,9 @@ export class CollectionComponent implements OnInit {
   }
   ngAfterViewInit() {
     this.collectionDataSource.paginator = this.collectionPaginator;
-    this.movieDataSource.paginator = this.moviePaginator;
   }
 
-  showMovies()
-  {
-    this.showMoviesModal = true; 
-  }
-  hideMovies()
-  {
-    this.showMoviesModal = false;
-  }
-
+ 
   queryCollection()
   {
     this.restApi.QueryCollection().subscribe((data: Collection[]) =>{
@@ -57,17 +50,27 @@ export class CollectionComponent implements OnInit {
   }
   searchCollection(collectionName)
   {
-
+    this.restApi.QueryCollectionsByName(collectionName).subscribe((data: Collection[]) =>{
+      this.collectionDataSource.data = data;
+    });
   }
-  openDialog(action,obj) {
+  selectedCollection(obj) {
 
-    if (action == "More")
-    {
-      this.showMovies();
-      this.restApi.QueryCollectionMovies(obj.CollectionId).subscribe((data) =>{
-        this.movieDataSource.data = data;
-      });
-    }
+    this.movieDataSource = new MatTableDataSource<SelectedCollectionMovie>();
+    this.selectedCollectionMovie = [];
+    
+    console.log ("obj ", obj); 
+    obj.movies.forEach((item, index) => {
+      console.log ("item ", item); 
+      const _selectedCollectionMovie = {} as SelectedCollectionMovie;
+      _selectedCollectionMovie.CollectionId = obj.collectionId;
+      _selectedCollectionMovie.CollectionName = obj.collectionName;
+      _selectedCollectionMovie.MovieId = item.movieId;
+      _selectedCollectionMovie.MovieName = item.movieName;
+      this.selectedCollectionMovie.push(_selectedCollectionMovie);
+    });
+    console.log ("selectedCollectionMovie ", this.selectedCollectionMovie); 
+    this.movieDataSource.data = this.selectedCollectionMovie;
   }
   
   showNotification(from, align,message,type){

@@ -80,7 +80,9 @@ export class MyCollectionComponent implements OnInit {
   }
   searchMyCollection(collectionName)
   {
-
+    this.restApi.QueryMyCollectionsByName(collectionName).subscribe((data: Collection[]) =>{
+      this.myCollectionDataSource.data = data;
+    });
   }
   addCollectionMovie(obj)
   {

@@ -59,11 +59,11 @@ namespace MovieCollection.Services.Core.CollectionServices
             _db.SaveChanges();
             return collection;
         }
-        public Boolean DeleteCollection(Guid collectionId)
+        public Boolean DeleteCollection(Guid collectionId, Guid userId)
         {
-            if (_db.Collections.Any(a => a.CollectionId == collectionId))
+            if (_db.Collections.Any(a => a.CollectionId == collectionId && a.CreatedBy == userId))
             {
-                var collection = _db.Collections.Where(a => a.CollectionId == collectionId).Single();
+                var collection = _db.Collections.Where(a => a.CollectionId == collectionId && a.CreatedBy == userId).Single();
                 if(_db.CollectionMovies.Any(a=>a.CollectionId == collection.CollectionId))
                 {
                     return false;
@@ -105,11 +105,19 @@ namespace MovieCollection.Services.Core.CollectionServices
 
         //-----------------------------------------------------------
 
-        public CollectionMovie CreateCollectionMovie (CollectionMovie collectionMovie)
+        public CollectionMovie CreateCollectionMovie (CollectionMovie collectionMovie , Guid userId)
         {
-            _db.CollectionMovies.Add(collectionMovie);
-            _db.SaveChanges();
-            return collectionMovie;
+            if(_db.Collections.Any(a=>a.CreatedBy == userId))
+            {
+                _db.CollectionMovies.Add(collectionMovie);
+                _db.SaveChanges();
+                return collectionMovie;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public Boolean QueryCollectionMovie(Guid movieId, Guid collectionId)

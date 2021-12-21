@@ -25,7 +25,7 @@
                               <ng-container matColumnDef="action">
                                 <th mat-header-cell *matHeaderCellDef> Action </th>
                                 <td mat-cell *matCellDef="let element" class="action-link"> 
-                                  <a (click)="openDialog('More',element)">More</a>  
+                                  <a (click)="selectedCollection(element)">select</a>  
                                 </td>
                               </ng-container>
 
@@ -62,51 +62,44 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+          <div class="card">
+              <div class="card-header card-header-danger">
+                  <h4 class="card-title">Collection's Movies</h4>
+              </div>
+              <div class="card-body">
+                  <div class="mat-elevation-z8">
+                      <table mat-table [dataSource]="movieDataSource">
+                    
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="CollectionId">
+                          <th mat-header-cell *matHeaderCellDef> CollectionId </th>
+                          <td mat-cell *matCellDef="let element"> {{element.CollectionId}} </td>
+                        </ng-container>
+                    
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="CollectionName">
+                          <th mat-header-cell *matHeaderCellDef> CollectionName </th>
+                          <td mat-cell *matCellDef="let element"> {{element.CollectionName}} </td>
+                        </ng-container>
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="MovieId">
+                          <th mat-header-cell *matHeaderCellDef> MovieId </th>
+                          <td mat-cell *matCellDef="let element"> {{element.MovieId}} </td>
+                        </ng-container>
+                    
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="MovieName">
+                          <th mat-header-cell *matHeaderCellDef> MovieName </th>
+                          <td mat-cell *matCellDef="let element"> {{element.MovieName}} </td>
+                        </ng-container>
+  
+                        <tr mat-header-row *matHeaderRowDef="movieDisplayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: movieDisplayedColumns;"></tr>
+                      </table>
+                    </div>
+              </div>
+          </div>
     </div>
   </div>
-  
-  <div [style.display]="showMoviesModal ? 'block' : 'none'" class="modal" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Movies</h4>
-        </div>
-        <div class="modal-body">
-            <div class="card">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title">Collection List</h4>
-                </div>
-                <div class="card-body">
-                    <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="movieDataSource">
-                      
-                          <!-- Position Column -->
-                          <ng-container matColumnDef="MovieId">
-                            <th mat-header-cell *matHeaderCellDef> Movie Id </th>
-                            <td mat-cell *matCellDef="let element"> {{element.movieId}} </td>
-                          </ng-container>
-                      
-                          <!-- Name Column -->
-                          <ng-container matColumnDef="MovieName">
-                            <th mat-header-cell *matHeaderCellDef> Movie Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.movieName}} </td>
-                          </ng-container>
-
-                          <tr mat-header-row *matHeaderRowDef="movieDisplayedColumns"></tr>
-                          <tr mat-row *matRowDef="let row; columns: movieDisplayedColumns;"></tr>
-                        </table>
-                      
-                        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                                       showFirstLastButtons 
-                                       aria-label="Select page of periodic elements">
-                        </mat-paginator>
-                      </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-dark" data-dismiss="modal" (click) = "hideMovies()">Close</button>
-        </div>
-      </div>
-    </div>
-</div>
+</div>  

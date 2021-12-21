@@ -1,0 +1,190 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Collection List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mat-elevation-z8">
+                            <table mat-table [dataSource]="myCollectionDataSource">
+                          
+                              <!-- Position Column -->
+                              <ng-container matColumnDef="CollectionId">
+                                <th mat-header-cell *matHeaderCellDef> CollectionId </th>
+                                <td mat-cell *matCellDef="let element"> {{element.collectionId}} </td>
+                              </ng-container>
+                          
+                              <!-- Name Column -->
+                              <ng-container matColumnDef="CollectionName">
+                                <th mat-header-cell *matHeaderCellDef> CollectionName </th>
+                                <td mat-cell *matCellDef="let element"> {{element.collectionName}} </td>
+                              </ng-container>
+
+                              <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef> Action </th>
+                                <td mat-cell *matCellDef="let element" class="action-link"> 
+                                  <a (click)="selectedCollection(element)">Select</a> 	&nbsp; 	&nbsp;
+                                  <a (click)="showSelectMovie(element)">Add</a>   
+                                </td>
+                                
+                              </ng-container>
+
+                              <tr mat-header-row *matHeaderRowDef="myCollectionDisplayedColumns"></tr>
+                              <tr mat-row *matRowDef="let row; columns: myCollectionDisplayedColumns;"></tr>
+                            </table>
+                          
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                                           showFirstLastButtons 
+                                           aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                          </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Search My Collection</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-12">
+                                  <mat-form-field class="example-full-width">
+                                      <input #MyCollectionName matInput name="MyCollectionName" placeholder="Collection Name">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="searchMyCollection(MyCollectionName.value)">Search</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Create Collection</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-12">
+                                  <mat-form-field class="example-full-width">
+                                      <input #CreateMyCollectionName matInput name="CreateMyCollectionName" placeholder="Collection Name">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="CreateMyCollection(CreateMyCollectionName.value)">Create</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Collection's Movies</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mat-elevation-z8">
+                        <table mat-table [dataSource]="myMovieDataSource">
+                      
+                          <!-- Position Column -->
+                          <ng-container matColumnDef="CollectionId">
+                            <th mat-header-cell *matHeaderCellDef> CollectionId </th>
+                            <td mat-cell *matCellDef="let element"> {{element.CollectionId}} </td>
+                          </ng-container>
+                      
+                          <!-- Name Column -->
+                          <ng-container matColumnDef="CollectionName">
+                            <th mat-header-cell *matHeaderCellDef> CollectionName </th>
+                            <td mat-cell *matCellDef="let element"> {{element.CollectionName}} </td>
+                          </ng-container>
+                          <!-- Position Column -->
+                          <ng-container matColumnDef="MovieId">
+                            <th mat-header-cell *matHeaderCellDef> MovieId </th>
+                            <td mat-cell *matCellDef="let element"> {{element.MovieId}} </td>
+                          </ng-container>
+                      
+                          <!-- Name Column -->
+                          <ng-container matColumnDef="MovieName">
+                            <th mat-header-cell *matHeaderCellDef> MovieName </th>
+                            <td mat-cell *matCellDef="let element"> {{element.MovieName}} </td>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef> Action </th>
+                            <td mat-cell *matCellDef="let element" class="action-link"> 
+                              <a (click)="deleteMyCollectionMovie(element)">Delete</a>  
+                            </td>
+                          </ng-container>
+    
+                          <tr mat-header-row *matHeaderRowDef="myMovieDisplayedColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: myMovieDisplayedColumns;"></tr>
+                        </table>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+
+
+  <div [style.display]="showSelectedMovie ? 'block' : 'none'" class="modal" id="selectmoviemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Select Movie</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+            </div>
+            <div class="row">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Movies</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mat-elevation-z8">
+                            <table mat-table [dataSource]="movieDataSource">
+                          
+                              <!-- Position Column -->
+                              <ng-container matColumnDef="MovieId">
+                                <th mat-header-cell *matHeaderCellDef> MovieId </th>
+                                <td mat-cell *matCellDef="let element"> {{element.movieId}} </td>
+                              </ng-container>
+                          
+                              <!-- Name Column -->
+                              <ng-container matColumnDef="MovieName">
+                                <th mat-header-cell *matHeaderCellDef> MovieName </th>
+                                <td mat-cell *matCellDef="let element"> {{element.movieName}} </td>
+                              </ng-container>
+        
+                              <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef> Action </th>
+                                <td mat-cell *matCellDef="let element" class="action-link"> 
+                                  <a (click)="addCollectionMovie(element)">Add</a>  
+                                </td>
+                              </ng-container>
+                              <tr mat-header-row *matHeaderRowDef="movieDisplayedColumns"></tr>
+                              <tr mat-row *matRowDef="let row; columns: movieDisplayedColumns;"></tr>
+                            </table>
+                            <mat-paginator [pageSizeOptions]="[5]"
+                                showFirstLastButtons 
+                                aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-dismiss="modal" (click) = "hideSelectMovie()">Close</button>
+        </div>
+      </div>
+    </div>
+</div>

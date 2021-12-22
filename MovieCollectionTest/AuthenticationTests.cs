@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using MovieCollection.Model;
 using System.Linq;
+using MovieCollection.Services.App.RoleServices;
 
 namespace MovieCollectionTest
 {
@@ -17,6 +18,8 @@ namespace MovieCollectionTest
     {
         private Mock<IAuthenticationService> _authenticationService;
         private Mock<IUserService> _userService;
+        private Mock<IRoleService> _roleService;
+
         private ApplicationDbContext _context;
 
 
@@ -24,6 +27,7 @@ namespace MovieCollectionTest
         {
             _authenticationService = new Mock<IAuthenticationService>();
             _userService = new Mock<IUserService>();
+            _roleService = new Mock<IRoleService>();
 
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -35,7 +39,7 @@ namespace MovieCollectionTest
         [Fact]
         public void LoginNotFoundTest()
         { 
-            var controller = new AuthenticationController(_authenticationService.Object, _userService.Object);
+            var controller = new AuthenticationController(_authenticationService.Object, _userService.Object, _roleService.Object);
 
             LoginReqViewEntity loginReq = new LoginReqViewEntity();
             loginReq.UserName = "test1";
@@ -49,7 +53,7 @@ namespace MovieCollectionTest
         [Fact]
         public void SignupForbidenTest()
         {
-            var controller = new AuthenticationController(_authenticationService.Object, _userService.Object);
+            var controller = new AuthenticationController(_authenticationService.Object, _userService.Object, _roleService.Object);
 
             User user = new User();
             user.UserName = "test1";

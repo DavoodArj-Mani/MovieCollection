@@ -53,13 +53,13 @@ The UI is made with Angular
 + Open visual studio code 
 + Select sub directory in the main cloned folder `MovieCollectionWeb`
 + Config the connection url in the `src/app/shared/rest-api.service.ts` change `apiURL = "http://localhost:49501";` to backend url.
-#### In case of not using the docker use this
+##### In case of not using the docker use this
 + In the Terminal 
 + `npm install` in order to install all dependencies
 + After it finished `ng serve`
 + The angular web page will be run in `localhost:4200` but it can be changed in `protractor.conf.js` file.
 
-##### Run Application under Docker
+#### Run Application under Docker
 + go to Main directory with Terminal/CMD 'MovieCollection' where the 'docker-compose.yml' is located
 + Run 'docker-compose up'
 + Note: my machine does not have enogh resorces, so i was not able to work with the docker like this. I just executed the apllication with the terminal for UI and Docker-Compose in Visual Studio. 

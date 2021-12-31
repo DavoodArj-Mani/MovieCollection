@@ -48,7 +48,7 @@ All the above directories are mostly sorted by three different factors
 The UI is made with Angular
 + Open visual studio code 
 + Select sub directory in the main cloned folder `MovieCollectionWeb`
-+ Config the connection url in the `src/app/shared/rest-api.service.ts` change `apiURL = "http://localhost:5000";` to backend url.
++ Config the connection url in the `src/app/shared/rest-api.service.ts` change `apiURL = "http://localhost:49501";` to backend url.
 #### In case of not using the docker use this
 + In the Terminal 
 + `npm install` in order to install all dependencies

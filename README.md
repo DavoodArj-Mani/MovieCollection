@@ -1,7 +1,7 @@
 # MovieCollection
 ![](https://github.com/DavoodArj-Mani/MovieCollection/blob/master/MovieCollection.png)
 In this project several technologies have been used such as
-+ ASP.NET
++ ASP.NET Core 5.13
     + Entity Framework
     + Authentication 
     + JWT (Role)

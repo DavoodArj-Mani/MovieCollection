@@ -14,7 +14,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatRippleModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,10 +37,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MovieComponent } from 'app/movie/movie.component';
-import { CollectionComponent } from 'app/collection/collection.component';
-import { RoleComponent } from 'app/role/role.component';
-import { MyCollectionComponent } from 'app/my-collection/my-collection.component';
+import { MovieComponent } from 'app/components/movie/movie.component';
+import { MyCollectionComponent } from 'app/components/my-collection/my-collection.component';
+import { ContactComponent } from 'app/components/contact/contact.component';
+import { MoviesComponent } from 'app/components/movies/movies.component';
+import { CollectionComponent } from 'app/components/collection/collection.component';
+import { ProgressSpinnerComponent } from 'app/progress-spinner/progress-spinner.component';
+import { AppOverlayModule } from 'app/shared/overlay/overlay.module';
+import { UsersComponent } from 'app/components/users/users.component';
 
 
 @NgModule({
@@ -80,13 +84,20 @@ import { MyCollectionComponent } from 'app/my-collection/my-collection.component
     MatGridListModule,
     MatRadioModule,
     MatDatepickerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    AppOverlayModule,
+    MatNativeDateModule
   ],
+  entryComponents: [ProgressSpinnerComponent],
   declarations: [
     MovieComponent,
     CollectionComponent,
-    RoleComponent,
     MyCollectionComponent,
+    ContactComponent,
+    MoviesComponent,
+    ContactComponent,
+    ProgressSpinnerComponent,
+    UsersComponent,
   ]
 })
 

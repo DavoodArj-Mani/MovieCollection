@@ -36,11 +36,21 @@ namespace MovieCollection.Controllers.App
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("QueryById")]
-        public IActionResult QueryById([FromForm] Guid userId)
+        [HttpGet]
+        [Route("QueryById/{userId}")]
+        public IActionResult QueryById([FromRoute] Guid userId)
         {
             var result = _userService.QueryUser(userId);
+            if (result == null)
+                return NotFound();
+            else
+                return Ok(result);
+        }
+        [HttpGet]
+        [Route("QueryUserByName/{userName}")]
+        public IActionResult QueryUserByName([FromRoute] string userName)
+        {
+            var result = _userService.QueryUserByName(userName);
             if (result == null)
                 return NotFound();
             else
@@ -67,44 +77,6 @@ namespace MovieCollection.Controllers.App
             userRole.RoleId = roleId;
             var result = _userService.CreateUserRole(userRole);
             return Ok(result);
-        }
-
-        [HttpGet]
-        [Route("Install")]
-        public IActionResult Install()
-        {
-            var user_admin = _userService.QueryUserByName("a@a.com");
-            if (user_admin == null)
-            {
-                user_admin.UserName = "a@a.com";
-                user_admin.Password = "123456";
-                _userService.CreateUser(user_admin);
-            }
-
-            var admin_role = _roleService.QueryRoleByName("Admin");
-            if (admin_role == null)
-            {
-                admin_role.RoleName = "Admin";
-                _roleService.CreateRole(admin_role);
-
-                UserRole userRole = new UserRole();
-                userRole.RoleId = admin_role.RoleId;
-                userRole.UserId = user_admin.UserId;
-                _userService.CreateUserRole(userRole);
-            }
-
-            var user_role = _roleService.QueryRoleByName("User");
-            if (user_role == null)
-            {
-                user_role.RoleName = "User";
-                _roleService.CreateRole(user_role);
-
-                UserRole userRole = new UserRole();
-                userRole.RoleId = user_role.RoleId;
-                userRole.UserId = user_admin.UserId;
-                _userService.CreateUserRole(userRole);
-            }
-            return Ok();
         }
     }
 }

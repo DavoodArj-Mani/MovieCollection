@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using MovieCollection.Model;
 using MovieCollection.Model.App;
 using MovieCollection.Model.Core;
@@ -9,7 +10,7 @@ namespace MovieCollection.Services.App.UserServices
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext _db;
+        public readonly ApplicationDbContext _db;
 
         public UserService(ApplicationDbContext db)
         {
@@ -18,27 +19,42 @@ namespace MovieCollection.Services.App.UserServices
 
         public IEnumerable<User> QueryAllUsers()
         {
-            var users = _db.Users;
+            var users = _db.Users.Select(c => new User { UserId = c.UserId, UserName = c.UserName });
             return users;
         }
         public User QueryUser(Guid userId)
         {
             if(_db.Users.Any(a => a.UserId == userId))
             {
-                User user = _db.Users.Where(a => a.UserId == userId).Single();
+                User user = _db.Users.Where(a => a.UserId == userId).Select(c => new User { UserId = c.UserId, UserName = c.UserName }).Single();
                 return user;
             }
             return null;
         }
-        public User QueryUserByName(string userName)
+        public IEnumerable<User> QueryUserByName(string userName)
+        {
+            var users = _db.Users.Where(a => a.UserName.Contains(userName)).Select(c => new User { UserId = c.UserId, UserName = c.UserName });
+            return users;
+        }
+        public Boolean IsUserExist(string userName)
         {
             if (_db.Users.Any(a => a.UserName == userName))
             {
-                User user = _db.Users.Where(a => a.UserName == userName).Single();
+                return true;
+            }
+            return false;
+        }
+
+        public User QueryOneUserByName(string userName)
+        {
+            if (_db.Users.Any(a => a.UserName == userName))
+            {
+                User user = _db.Users.Where(a => a.UserName == userName).Select(c => new User { UserId = c.UserId, UserName = c.UserName }).Single();
                 return user;
             }
             return null;
         }
+
         public User CreateUser(User user)
         {
             _db.Users.Add(user);

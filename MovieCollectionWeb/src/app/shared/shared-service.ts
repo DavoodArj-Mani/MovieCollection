@@ -5,7 +5,6 @@ import { EventEmitter, Injectable, Output } from "@angular/core";
 export class SharedService {
    @Output() userName: string;
    @Output() isLogedIn: Boolean;
-
    constructor() {
    }
    setUserName(userName) {

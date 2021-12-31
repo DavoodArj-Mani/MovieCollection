@@ -34,7 +34,7 @@ namespace MovieCollection.Services.App.AuthenticationServices
 
             var username = tokenS.Claims.First(claim => claim.Type == "username").Value;
 
-            return _userService.QueryUserByName(username);
+            return _userService.QueryOneUserByName(username);
 
         }
 

@@ -1,0 +1,179 @@
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'MovieCollection')
+BEGIN
+  CREATE DATABASE [MovieCollection]
+END
+  GO
+USE [MovieCollection]
+  GO
+
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Users' and xtype='U')
+BEGIN
+    CREATE TABLE Users
+    (
+        UserId uniqueidentifier NOT NULL,
+        UserName varchar(32) NOT NULL,
+        Password varchar(32) NOT NULL  
+    )
+    ALTER TABLE Users ADD CONSTRAINT UserId
+        PRIMARY KEY (UserId)
+END
+    GO
+-- ----------------------------------------------------------------
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Roles' and xtype='U')
+BEGIN
+    CREATE TABLE Roles
+    (
+        RoleId uniqueidentifier NOT NULL,
+        RoleName varchar(32) NULL
+    )
+    ALTER TABLE Roles ADD CONSTRAINT RoleId
+        PRIMARY KEY (RoleId)
+END
+    GO
+-- ----------------------------------------------------------------
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='UserRoles' and xtype='U')
+BEGIN
+    CREATE TABLE UserRoles
+    (
+        UserRoleId uniqueidentifier NOT NULL,
+        UserId uniqueidentifier NULL,
+        RoleId uniqueidentifier NULL
+    )
+    ALTER TABLE UserRoles ADD CONSTRAINT UserRoleId
+        PRIMARY KEY (UserRoleId)
+    ALTER TABLE UserRoles ADD CONSTRAINT FK_UserRoles_RoleId
+        FOREIGN KEY (RoleId) REFERENCES Roles (RoleId)
+    ALTER TABLE UserRoles ADD CONSTRAINT FK_UserRoles_UserId
+        FOREIGN KEY (UserId) REFERENCES Users (UserId)
+END
+    GO
+-- ----------------------------------------------------------------
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Contacts' and xtype='U')
+BEGIN
+    CREATE TABLE Contacts
+    (
+        ContactId uniqueidentifier NOT NULL,
+        FirstName varchar(64) NOT NULL,
+        LastName varchar(64) NOT NULL,
+        BirthDate date NOT NULL,
+        Gender int NOT NULL,
+        UserId uniqueidentifier NOT NULL
+    )
+    ALTER TABLE Contacts ADD CONSTRAINT ContactId
+        PRIMARY KEY (ContactId)
+    ALTER TABLE Contacts ADD CONSTRAINT FK_Contact_UserId
+        FOREIGN KEY (UserId) REFERENCES Users (UserId)
+END
+    GO
+-- ----------------------------------------------------------------
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Collections' and xtype='U')
+BEGIN
+    CREATE TABLE Collections
+    (
+        CollectionId uniqueidentifier NOT NULL,
+        CollectionName varchar(64) NULL,
+        CreatedBy uniqueidentifier NULL,
+        Description varchar(max) NULL
+    )
+    ALTER TABLE Collections ADD CONSTRAINT CollectionId
+        PRIMARY KEY (CollectionId)
+    ALTER TABLE Collections ADD CONSTRAINT FK_Collections_UserId
+        FOREIGN KEY (CreatedBy) REFERENCES Users (UserId)
+END
+    GO
+-- ----------------------------------------------------------------
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Movies' and xtype='U')
+BEGIN
+    CREATE TABLE Movies
+    (
+        MovieId uniqueidentifier NOT NULL,
+        MovieName varchar(64) NOT NULL,
+        Director varchar(128) NULL,
+        Writers varchar(256) NULL,
+        Stars varchar(256) NULL,
+        IMDB_Score varchar(5) NULL,
+        ImageName varchar(100) NULL,
+        Image varbinary(max) NULL
+    )
+    ALTER TABLE Movies ADD CONSTRAINT MovieId
+        PRIMARY KEY (MovieId)
+END
+    GO
+-- ----------------------------------------------------------------
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionMovies' and xtype='U')
+BEGIN
+    CREATE TABLE CollectionMovies
+    (
+        MovieCollectionId uniqueidentifier NOT NULL,
+        CollectionId uniqueidentifier NULL,
+        MovieId uniqueidentifier NULL
+    )
+    ALTER TABLE CollectionMovies ADD CONSTRAINT MovieCollectionId
+        PRIMARY KEY (MovieCollectionId)
+    ALTER TABLE CollectionMovies ADD CONSTRAINT FK_CollectionMovies_CollectionId
+        FOREIGN KEY (CollectionId) REFERENCES Collections (CollectionId)
+    ALTER TABLE CollectionMovies ADD CONSTRAINT FK_CollectionMovies_MovieId
+        FOREIGN KEY (MovieId) REFERENCES Movies (MovieId)
+END
+    GO
+-- ----------------------------------------------------------------
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MovieTypes' and xtype='U')
+BEGIN
+    CREATE TABLE MovieTypes
+    (
+        MovieTypeId uniqueidentifier NOT NULL,
+        MovieTypeName varchar(64) NOT NULL,
+        MovieId uniqueidentifier NOT NULL
+    )
+    ALTER TABLE MovieTypes ADD CONSTRAINT MovieTypeId
+        PRIMARY KEY (MovieTypeId)
+    ALTER TABLE MovieTypes ADD CONSTRAINT FK_MovieTypes_MovieId
+        FOREIGN KEY (MovieId) REFERENCES Movies (MovieId)
+END
+    GO
+
+
+
+-- Create Sample Records ----------------------------------------------------------------
+
+IF NOT EXISTS (SELECT * from Users t where t.UserId = '87cfa91a-ce45-4073-c4f9-08d9c7eabac0')
+BEGIN
+    INSERT INTO Users (UserId,UserName,Password)
+    VALUES ('87cfa91a-ce45-4073-c4f9-08d9c7eabac0','a@a.com','123456');
+END
+    Go
+
+IF NOT EXISTS (SELECT * from Roles t where t.RoleId = '86a2d061-704a-4a31-cdc0-08d9c7eabaf5')
+BEGIN
+    INSERT INTO Roles (RoleId,RoleName)
+    VALUES ('86a2d061-704a-4a31-cdc0-08d9c7eabaf5','Admin');
+END
+    Go
+
+IF NOT EXISTS (SELECT * from Roles t where t.RoleId = 'e39771c9-3849-49f0-cdc1-08d9c7eabaf5')
+BEGIN
+    INSERT INTO Roles (RoleId,RoleName)
+    VALUES ('e39771c9-3849-49f0-cdc1-08d9c7eabaf5','User');
+END
+    Go
+
+IF NOT EXISTS (SELECT * from UserRoles t where t.UserRoleId = '781868b2-a73b-4935-aa00-08d9c7eabb07')
+BEGIN
+    INSERT INTO UserRoles (UserRoleId,UserId,RoleId)
+    VALUES ('781868b2-a73b-4935-aa00-08d9c7eabb07','87cfa91a-ce45-4073-c4f9-08d9c7eabac0','86a2d061-704a-4a31-cdc0-08d9c7eabaf5');
+END
+    Go
+
+IF NOT EXISTS (SELECT * from UserRoles t where t.UserRoleId = '76ee894a-d685-4c90-aa01-08d9c7eabb07')
+BEGIN
+    INSERT INTO UserRoles (UserRoleId,UserId,RoleId)
+    VALUES ('76ee894a-d685-4c90-aa01-08d9c7eabb07','87cfa91a-ce45-4073-c4f9-08d9c7eabac0','e39771c9-3849-49f0-cdc1-08d9c7eabaf5');
+END
+    Go

@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MovieCollection.Model;
-using MovieCollection.Model.App;
-using MovieCollection.Services.App.RoleServices;
-using MovieCollection.Services.App.UserServices;
 using MovieCollection.Shared;
 
 namespace MovieCollection
@@ -28,15 +21,16 @@ namespace MovieCollection
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            
+
         }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
             );
+
             services.AddControllers();
             services.AddAuthentication(options =>
             {
@@ -54,10 +48,6 @@ namespace MovieCollection
                     ValidateAudience = false
                 };
             });
-
-            //services.AddSingleton;
-            //services.AddScoped;
-            //services.AddTransient;
             services.AddMyServices();
 
         }
@@ -70,9 +60,7 @@ namespace MovieCollection
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().
-            WithMethods("GET","POST","OPTIONS", "PUT", "DELETE"));
-
-
+            WithMethods("GET", "POST", "OPTIONS", "PUT", "DELETE"));
 
             app.UseRouting();
 

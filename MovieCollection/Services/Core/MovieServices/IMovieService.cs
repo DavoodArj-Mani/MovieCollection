@@ -16,6 +16,8 @@ namespace MovieCollection.Services.Core.MovieServices
 
         Movie CreateMovie(Movie movie);
 
+        Movie UpdateMovie(Movie movie);
+
         Boolean DeleteMovie(Guid movieId);
     }
 }

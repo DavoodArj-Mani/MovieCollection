@@ -11,9 +11,13 @@ namespace MovieCollection.Model.Core
         public Guid CollectionId { get; set; }
         public string CollectionName { get; set; }
         public Guid CreatedBy { get; set; }
+        public string Description { get; set; }
 
         [NotMapped]
         public ICollection<Movie> Movies { get; set; }
+
+        [NotMapped]
+        public string UserName { get; set; }
 
     }
 }

@@ -5,4 +5,5 @@ export class Collection {
     CollectionName: string;
     CreatedBy: Guid;
     Movies: Movie[];
+    UserName: string;
  }

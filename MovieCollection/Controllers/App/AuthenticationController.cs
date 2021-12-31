@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieCollection.Model;
 using MovieCollection.Model.App;
 using MovieCollection.Model.Core;
@@ -19,13 +20,15 @@ namespace MovieCollection.Controllers.App
     [AllowAnonymous]
     public class AuthenticationController : Controller
     {
-        public IAuthenticationService _authenticationService;
-        public IUserService _userService;
-        public IRoleService _roleService;
+        private IAuthenticationService _authenticationService;
+        private IUserService _userService;
+        private IRoleService _roleService;
+        
 
         public AuthenticationController(IAuthenticationService authenticationService, IUserService userService, IRoleService roleService)
         {
             _authenticationService = authenticationService;
+
             _userService = userService;
             _roleService = roleService;
         }
@@ -45,8 +48,8 @@ namespace MovieCollection.Controllers.App
         [Route("SignUp")]
         public IActionResult Signup([FromBody] User user)
         {
-            var userIsExist = _userService.QueryUserByName(user.UserName);
-            if (userIsExist != null)
+            var userIsExist = _userService.IsUserExist(user.UserName);
+            if (userIsExist)
             {
                 return BadRequest();
             }

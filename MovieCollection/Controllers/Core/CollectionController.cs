@@ -28,6 +28,7 @@ namespace MovieCollection.Controllers.Core
 
         [HttpGet]
         [Route("QueryAll")]
+        [AllowAnonymous]
         public IActionResult QueryAll()
         {
             var result = _collectionService.QueryAllCollections();

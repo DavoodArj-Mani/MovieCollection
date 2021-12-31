@@ -28,11 +28,14 @@
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
     <None Remove="NuGet.PackageManagement" />
-    <None Remove="Migrations\" />
     <None Remove="Services\App\UserServices\" />
     <None Remove="Services\App\RoleServices\" />
     <None Remove="Services\Core\MovieServices\" />
     <None Remove="Services\Core\CollectionServices\" />
+    <None Remove="Microsoft.EntityFrameworkCore.Design" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="Services\Core\ContactServices\" />
+    <None Remove="Microsoft.EntityFrameworkCore.InMemory" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -47,6 +50,12 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="NuGet.PackageManagement" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.13">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.13" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -64,10 +73,10 @@
     <Folder Include="Services\Shared\" />
     <Folder Include="ViewEntity\App\AuthenticationServicesViewEntity\" />
     <Folder Include="Services\App\AuthenticationServices\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Services\App\UserServices\" />
     <Folder Include="Services\App\RoleServices\" />
     <Folder Include="Services\Core\MovieServices\" />
     <Folder Include="Services\Core\CollectionServices\" />
+    <Folder Include="Services\Core\ContactServices\" />
   </ItemGroup>
 </Project>

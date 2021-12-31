@@ -1,0 +1,65 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">User List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mat-elevation-z8">
+                            <table mat-table [dataSource]="dataSource">
+                              <ng-container matColumnDef="UserId">
+                                <th mat-header-cell *matHeaderCellDef>User Id</th>
+                                <td mat-cell *matCellDef="let element"> {{element.userId}} </td>
+                              </ng-container>
+
+                              <ng-container matColumnDef="UserName">
+                                <th mat-header-cell *matHeaderCellDef>User Name</th>
+                                <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+                              </ng-container>
+
+                              <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef> Action </th>
+                                <td mat-cell *matCellDef="let element" class="action-link"> 
+                                    <a (click)="openDialog()">More</a> 	
+                                </td>
+                              </ng-container>
+
+                              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                          
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                                           showFirstLastButtons 
+                                           aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Search User</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-12">
+                                  <mat-form-field class="example-full-width">
+                                      <input #UserName matInput name="UserName" placeholder="User Name">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="queryUserByName(UserName.value)">Search</button>
+                            <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="clearUserSearch()">Clear</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

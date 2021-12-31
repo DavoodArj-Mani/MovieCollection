@@ -42,9 +42,9 @@ namespace MovieCollection.Services.Core.MovieServices
 
         public IEnumerable<Movie> QueryByMovieName(string movieName)
         {
-            if (_db.Movies.Any(a => a.MovieName == movieName))
+            if (_db.Movies.Any(a => a.MovieName.Contains(movieName)))
             {
-                var movies = _db.Movies.Where(a => a.MovieName == movieName);
+                var movies = _db.Movies.Where(a => a.MovieName.Contains(movieName));
                 return movies;
             }
             return null;
@@ -56,9 +56,38 @@ namespace MovieCollection.Services.Core.MovieServices
             return movie;
         }
 
+        public Movie UpdateMovie(Movie movie)
+        {
+            var _movie = _db.Movies.Where(a => a.MovieId == movie.MovieId).Single();
+            if (_movie != null)
+            {
+                if (movie.MovieName != null)
+                    _movie.MovieName = movie.MovieName;
+                if (movie.Director != null)
+                    _movie.Director = movie.Director;
+                if (movie.Writers != null)
+                    _movie.Writers = movie.Writers;
+                if (movie.Stars != null)
+                    _movie.Stars = movie.Stars;
+                if (movie.IMDB_Score != null)
+                    _movie.IMDB_Score = movie.IMDB_Score;
+                if (movie.Image != null)
+                    _movie.Image = movie.Image;
+
+
+                _db.Movies.Update(_movie);
+                _db.SaveChanges();
+                return _movie;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public Boolean DeleteMovie(Guid movieId)
         {
-            if(_db.CollectionMovies.Any(a => a.MovieId == movieId))
+            if(!_db.CollectionMovies.Any(a => a.MovieId == movieId))
             {
                 return false;
             }

@@ -4,6 +4,7 @@ using MovieCollection.Services.App.AuthenticationServices;
 using MovieCollection.Services.App.RoleServices;
 using MovieCollection.Services.App.UserServices;
 using MovieCollection.Services.Core.CollectionServices;
+using MovieCollection.Services.Core.ContactServices;
 using MovieCollection.Services.Core.MovieServices;
 
 namespace MovieCollection.Model
@@ -22,6 +23,7 @@ namespace MovieCollection.Model
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<ICollectionService, CollectionService>();
+            services.AddTransient<IContactService, ContactService>();
 
 
             return services;

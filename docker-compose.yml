@@ -1,8 +1,31 @@
+
 version: '3.4'
 
 services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Q!w2e3r4ManiArjmandi
+    ports:
+      - "1433:1433"
   moviecollection:
     image: ${DOCKER_REGISTRY-}moviecollection
     build:
       context: .
       dockerfile: MovieCollection/Dockerfile
+    ports:
+      - "49501:80"
+    environment:
+      - "ConnectionStrings:DefaultConnection=Server=db;Port=1433;Database=MovieCollection;User=sa;Password=Q!w2e3r4ManiArjmandi;SslMode=None;ConnectionReset=false;connect timeout=3600"     
+    depends_on:
+      - db
+  angular:
+    image: ${DOCKER_REGISTRY-}moviecollectionweb
+    build:
+        context: .
+        dockerfile: MovieCollectionWeb/Dockerfile
+    volumes: # Volume binding
+        - './MovieCollectionWeb:/usr/src/app' 
+    ports: 
+        - '4200:4200' # Port mapping

@@ -19,7 +19,21 @@ namespace MovieCollection.Services.Core.CollectionServices
 
         public IEnumerable<Collection> QueryAllCollections()
         {
-            var collections = _db.Collections;
+
+            var collections = _db.Collections
+                .Join(
+                    _db.Users,
+                    collection => collection.CreatedBy,
+                    user => user.UserId,
+                    (collection, user) => new Collection
+                    {
+                        CollectionId = collection.CollectionId,
+                        CollectionName = collection.CollectionName,
+                        CreatedBy = collection.CreatedBy,
+                        Description = collection.Description,
+                        UserName = user.UserName,
+                    }
+                ).ToList();
             return getCollectionsMovies(collections);
         }
        
@@ -28,7 +42,19 @@ namespace MovieCollection.Services.Core.CollectionServices
         {
             if(_db.Collections.Any(a => a.CollectionId == collectionId))
             {
-                Collection collection = _db.Collections.Where(a => a.CollectionId == collectionId).Single();
+                Collection collection = _db.Collections.Where(a => a.CollectionId == collectionId).Join(
+                    _db.Users,
+                    collection => collection.CreatedBy,
+                    user => user.UserId,
+                    (collection, user) => new Collection
+                    {
+                        CollectionId = collection.CollectionId,
+                        CollectionName = collection.CollectionName,
+                        CreatedBy = collection.CreatedBy,
+                        Description = collection.Description,
+                        UserName = user.UserName,
+                    }
+                ).Single();
                 return getCollectionMovies(collection);
             }
             return null;
@@ -37,7 +63,19 @@ namespace MovieCollection.Services.Core.CollectionServices
         {
             if (_db.Collections.Any(a => a.CollectionName == collectionName))
             {
-                Collection collection = _db.Collections.Where(a => a.CollectionName == collectionName).Single();
+                Collection collection = _db.Collections.Where(a => a.CollectionName == collectionName).Join(
+                    _db.Users,
+                    collection => collection.CreatedBy,
+                    user => user.UserId,
+                    (collection, user) => new Collection
+                    {
+                        CollectionId = collection.CollectionId,
+                        CollectionName = collection.CollectionName,
+                        CreatedBy = collection.CreatedBy,
+                        Description = collection.Description,
+                        UserName = user.UserName,
+                    }
+                ).Single();
                 return getCollectionMovies(collection);
             }
             return null;
@@ -47,7 +85,19 @@ namespace MovieCollection.Services.Core.CollectionServices
         {
             if (_db.Collections.Any(a => a.CollectionName == collectionName))
             {
-                var collections = _db.Collections.Where(a => a.CollectionName == collectionName);
+                var collections = _db.Collections.Where(a => a.CollectionName == collectionName).Join(
+                    _db.Users,
+                    collection => collection.CreatedBy,
+                    user => user.UserId,
+                    (collection, user) => new Collection
+                    {
+                        CollectionId = collection.CollectionId,
+                        CollectionName = collection.CollectionName,
+                        CreatedBy = collection.CreatedBy,
+                        Description = collection.Description,
+                        UserName = user.UserName,
+                    }
+                ).ToList();
                 return getCollectionsMovies(collections);
             }
             return null;

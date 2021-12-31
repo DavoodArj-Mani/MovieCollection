@@ -7,28 +7,18 @@ import { Role } from './view-entity/role';
 import { LoginResp } from './view-entity/login-resp';
 import { Movie } from './view-entity/movie';
 import { Collection } from './view-entity/collection';
+import { Contact } from './view-entity/contact';
 import { CollectionMovie } from './view-entity/collection-movie';
-import { NavbarComponent } from 'app/components/navbar/navbar.component';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class RestApiService {
-  
-  // Define API
-  //apiURL = 'http://localhost:56600';
-  apiURL = "http://localhost:5000";
 
-  constructor(private http: HttpClient/*,private navBar: NavbarComponent*/) { }
+  apiURL = "http://localhost:49501";
 
-  /*========================================
-    CRUD Methods for consuming RESTful API
-  =========================================*/
-  //localStorage.removeItem('Token');
-  //localStorage.getItem('Token')
-  //if (localStorage.getItem("Token") === null) 
-  // Http Options
+  constructor(private http: HttpClient) { }
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -50,6 +40,30 @@ export class RestApiService {
       catchError(this.handleError)
     )
   }
+  QueryUsers(): Observable<User[]> 
+  {
+    if(!this.httpOptions.headers.has('Authorization'))
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+
+    return this.http.get<User[]>(this.apiURL + '/api/User/QueryAll',this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+  QueryUserByName(UserName): Observable<User[]> 
+  {
+    if(!this.httpOptions.headers.has('Authorization'))
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+      
+    return this.http.get<User[]>(this.apiURL + '/api/User/QueryUserByName/'+ UserName,this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+
+
   //----------------------------------------------------------------------------------------------------
 
   // HttpClient API get() method => QueryRoles
@@ -80,6 +94,17 @@ export class RestApiService {
       catchError(this.handleError)
     )
   }
+  QueryMovieById(MovieId): Observable<Movie> 
+  {
+    if(!this.httpOptions.headers.has('Authorization'))
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+      
+    return this.http.get<Movie>(this.apiURL + '/api/Movie/QueryById/'+ MovieId,this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
   QueryByName(MovieName): Observable<Movie[]> 
   {
     if(!this.httpOptions.headers.has('Authorization'))
@@ -102,6 +127,17 @@ export class RestApiService {
       catchError(this.handleError)
     )
   }
+  updateMovie(Movie): Observable<Movie> {
+    if(!this.httpOptions.headers.has('Authorization'))
+    this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+
+    return this.http.put<Movie>(this.apiURL + '/api/Movie/Update/' + Movie.movieId , JSON.stringify(Movie), this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+
   // HttpClient API delete() method => DeleteMovie
   DeleteMovie(Guid){
     if(!this.httpOptions.headers.has('Authorization'))
@@ -194,6 +230,41 @@ export class RestApiService {
     )
   }
   
+  //----------------------------------------------------------------------------------------------------
+  // Contact
+  QueryContactByUserName(UserName): Observable<Contact> 
+  {
+    if(!this.httpOptions.headers.has('Authorization'))
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+      
+    return this.http.get<Contact>(this.apiURL + '/api/Contact/QueryContactByUserName/'+ UserName,this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+  // HttpClient API post() method => CreateMovie
+  CreateContact(Contact): Observable<Contact> {
+    if(!this.httpOptions.headers.has('Authorization'))
+      this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+      
+    return this.http.post<Contact>(this.apiURL + '/api/Contact/CreateContact', JSON.stringify(Contact), this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+  UpdateContact(Contact): Observable<Contact> {
+    if(!this.httpOptions.headers.has('Authorization'))
+    this.httpOptions.headers = this.httpOptions.headers.append('Authorization', 'Bearer ' + localStorage.getItem('Token'))
+
+    return this.http.put<Contact>(this.apiURL + '/api/Contact/UpdateContact/' + Contact.contactId , JSON.stringify(Contact), this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+
 
   //----------------------------------------------------------------------------------------------------
   // Error handling 
@@ -220,36 +291,7 @@ export class RestApiService {
     return throwError(errorMessage);
   }
   
-
-
 /*
-  // HttpClient API get() method => Fetch employees list
-  getEmployees(): Observable<Employee> {
-    return this.http.get<Employee>(this.apiURL + '/employees')
-    .pipe(
-      retry(1),
-      catchError(this.handleError)
-    )
-  }
-
-  // HttpClient API get() method => Fetch employee
-  getEmployee(id): Observable<Employee> {
-    return this.http.get<Employee>(this.apiURL + '/employees/' + id)
-    .pipe(
-      retry(1),
-      catchError(this.handleError)
-    )
-  }  
-
-  // HttpClient API post() method => Create employee
-  createEmployee(employee): Observable<Employee> {
-    return this.http.post<Employee>(this.apiURL + '/employees', JSON.stringify(employee), this.httpOptions)
-    .pipe(
-      retry(1),
-      catchError(this.handleError)
-    )
-  }  
-
   // HttpClient API put() method => Update employee
   updateEmployee(id, employee): Observable<Employee> {
     return this.http.put<Employee>(this.apiURL + '/employees/' + id, JSON.stringify(employee), this.httpOptions)
@@ -258,18 +300,6 @@ export class RestApiService {
       catchError(this.handleError)
     )
   }
-
-  // HttpClient API delete() method => Delete employee
-  deleteEmployee(id){
-    return this.http.delete<Employee>(this.apiURL + '/employees/' + id, this.httpOptions)
-    .pipe(
-      retry(1),
-      catchError(this.handleError)
-    )
-  }
-
-  
-  
 */
 
 }

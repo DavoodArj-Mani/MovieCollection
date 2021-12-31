@@ -1,0 +1,88 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 *ngIf="!isNew" class="card-title">Create Movie</h4>
+                        <h4 *ngIf="isNew" class="card-title">Update Movie</h4>
+                        <p class="card-category"></p>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="movieForm" (ngSubmit)="submitForm()" novalidate>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Movie Id" formControlName="movieId" disabled>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Movie Name" formControlName="movieName">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Director" formControlName="director">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-8">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Writers" formControlName="writers">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="Stars" formControlName="stars">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput placeholder="IMDB Score" formControlName="imdb_score">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <!-- Submit -->
+                            <div class="button-wrapper">
+                                <button mat-flat-button class="btn btn-danger pull-right">Submit</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Image</h4>
+                        <p class="card-category"></p>
+                    </div>
+                    <div class="card-body">
+                        <img style="max-width: 100%; max-height: 100%;" [src]="imageSource" alt="Image Source">
+                        <mat-form-field>
+                            <mat-toolbar>
+                                <!-- Display files names -->
+                                <input matInput [(ngModel)]="fileAttr" readonly name="name" />
+                        
+                                <!-- Browse Button -->
+                                <button mat-flat-button color="primary">
+                                    Browse File
+                                </button>
+                            </mat-toolbar>
+                        
+                            <!-- Fetch selected filed on change -->
+                            <input type="file" #fileInput id="uploadFile" (change)="uploadFileEvt($event)" name="uploadFile" accept="image/*" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value" [backdropEnabled]="true"
+    [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>

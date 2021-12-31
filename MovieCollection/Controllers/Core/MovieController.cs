@@ -69,6 +69,11 @@ namespace MovieCollection.Controllers.Core
         [Route("Create")]
         public IActionResult CreateMovie([FromBody] Movie _movie)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
             var movieIsExist = _movieService.QueryOneByMovieName(_movie.MovieName);
             if (movieIsExist != null)
             {
@@ -77,6 +82,29 @@ namespace MovieCollection.Controllers.Core
             var result = _movieService.CreateMovie(_movie);
             return Ok(result);
         }
+
+        [HttpPut]
+        [Route("Update/{movieId}")]
+        public IActionResult UpdateMovie(Guid movieId, [FromBody] Movie movie)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
+            var movieIsExist = _movieService.QueryMovie(movieId);
+            if (movieIsExist == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var result = _movieService.UpdateMovie(movie);
+                return Ok(result);
+            }
+            
+        }
+
 
         [HttpDelete]
         [Route("Delete/{movieId}")]

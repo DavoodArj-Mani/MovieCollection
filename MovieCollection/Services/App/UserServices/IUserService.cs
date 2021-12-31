@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MovieCollection.Model;
 using MovieCollection.Model.App;
 using MovieCollection.Model.Core;
 
@@ -11,7 +12,11 @@ namespace MovieCollection.Services.App.UserServices
 
         User QueryUser(Guid userId);
 
-        User QueryUserByName(string userName);
+        IEnumerable<User> QueryUserByName(string userName);
+
+        User QueryOneUserByName(string userName);
+
+        Boolean IsUserExist(string userName);
 
         User CreateUser(User user);
 

@@ -33,7 +33,8 @@ export class NavbarComponent implements OnInit {
 
     constructor(location: Location,  private element: ElementRef, 
         private router: Router,private formBuilder: FormBuilder,
-        public restApi: RestApiService,sharedService: SharedService) {
+        public restApi: RestApiService,sharedService: SharedService) 
+    {
         this.location = location;
         this.sidebarVisible = false;
         this.sharedService = sharedService;
@@ -162,12 +163,12 @@ export class NavbarComponent implements OnInit {
               return this.listTitles[item].title;
           }
       }
-      return 'Dashboard';
+      return 'Collections';
     }
     get f() { return this.registerForm.controls; }
 
     getUserName(){
-        console.log ("userName ", this.sharedService.getUserName()); 
+        //console.log ("userName ", this.sharedService.getUserName()); 
         return this.sharedService.getUserName();
     }
     getLoginFlag()

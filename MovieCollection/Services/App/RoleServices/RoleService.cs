@@ -8,7 +8,7 @@ namespace MovieCollection.Services.App.RoleServices
 {
     public class RoleService : IRoleService
     {
-        private readonly ApplicationDbContext _db;
+        public readonly ApplicationDbContext _db;
 
         public RoleService(ApplicationDbContext db)
         {
@@ -22,14 +22,30 @@ namespace MovieCollection.Services.App.RoleServices
         }
         public Role QueryRole(Guid RoleId)
         {
-            Role role = _db.Roles.Where(a => a.RoleId == RoleId).Single();
-            return role;
+
+            if (_db.Roles.Any(a => a.RoleId == RoleId))
+            {
+                Role role = _db.Roles.Where(a => a.RoleId == RoleId).Single();
+                return role;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public Role QueryRoleByName(string roleName)
         {
-            Role role = _db.Roles.Where(a => a.RoleName == roleName).Single();
-            return role;
+            if(_db.Roles.Any(a => a.RoleName == roleName))
+            {
+                Role role = _db.Roles.Where(a => a.RoleName == roleName).Single();
+                return role;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public Role CreateRole(Role role)

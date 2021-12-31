@@ -1,5 +1,7 @@
 # MovieCollection
 ![](https://github.com/DavoodArj-Mani/MovieCollection/blob/master/MovieCollection.png)
+![](https://github.com/DavoodArj-Mani/MovieCollection/blob/master/MovieCollection-Movie.png)
+
 In this project several technologies have been used such as
 + ASP.NET Core 5.13
     + Entity Framework

@@ -9,7 +9,9 @@ In this project several technologies have been used such as
     + JWT (Role)
  + Angular 12
     + Material
+    + Reactive Form
     + Creative Tim (Template) 
+    + Support Base64 for image
  + Docker
  + Unit Test (XUnit)
  

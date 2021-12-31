@@ -59,7 +59,7 @@ The UI is made with Angular
 + After it finished `ng serve`
 + The angular web page will be run in `localhost:4200` but it can be changed in `protractor.conf.js` file.
 
-#### Run Application under Docker
+##### Run Application under Docker
 + go to Main directory with Terminal/CMD 'MovieCollection' where the 'docker-compose.yml' is located
 + Run 'docker-compose up'
 + Note: my machine does not have enogh resorces, so i was not able to work with the docker like this. I just executed the apllication with the terminal for UI and Docker-Compose in Visual Studio. 
